@@ -121,12 +121,18 @@ public class RedBlackTree {
         //
     }
 
-    public void rotateRight(Node n){
-        Node temp = n.getLeftChild();
-        temp.setParent(n.getParent());
-        temp.setRightChild(n);
-        n.setLeftChild(temp.getRightChild());
-        n.setParent(temp);
+    public void rotateRight(Node y){
+        Node x = y.getLeftChild();
+        if (y == root) {
+            root = x;
+        }
+        y.setLeftChild(x.getRightChild());
+        x.getRightChild().setParent(y);
+
+        x.setParent(y.getParent());
+
+        y.setParent(x);
+        x.setRightChild(y);
     }
 
     public void fixTree(Node current) {
