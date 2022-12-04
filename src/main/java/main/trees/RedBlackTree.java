@@ -43,8 +43,41 @@ public class RedBlackTree {
 
     // place a new node in the RB tree with data the parameter and color it red.
     public void addNode(String data){  	//this < that  <0.  this > that  >0
-        //	fill
+        Node newNode = new Node();
+        newNode.setWord(data);
+        if (root == null) {
+            root = newNode;
+            return;
+        }
 
+        Node currentNode = root;
+
+        while (currentNode != null && newNode.getParent() == null) {
+            // we don't want duplicates
+            if (Objects.equals(currentNode.getWord(), data)) return;
+
+            else if (currentNode.getWord().compareTo(data) > 0) {
+                if (currentNode.getLeftChild() == null) {
+                    currentNode.setLeftChild(newNode);
+                    newNode.setParent(currentNode);
+                    newNode.setColor(false);
+//                    return;
+                }
+                else
+                    currentNode = currentNode.getLeftChild();
+            }
+            else if (currentNode.getWord().compareTo(data) < 0){
+                if (currentNode.getRightChild() == null) {
+                    currentNode.setRightChild(newNode);
+                    newNode.setParent(currentNode);
+                    newNode.setColor(false);
+//                    return;
+                }
+                else
+                    currentNode = currentNode.getRightChild();
+            }
+        }
+        fixTree(newNode);
     }
 
     public void insert(String data){
@@ -89,7 +122,11 @@ public class RedBlackTree {
     }
 
     public void rotateRight(Node n){
-        //
+        Node temp = n.getLeftChild();
+        temp.setParent(n.getParent());
+        temp.setRightChild(n);
+        n.setLeftChild(temp.getRightChild());
+        n.setParent(temp);
     }
 
     public void fixTree(Node current) {
