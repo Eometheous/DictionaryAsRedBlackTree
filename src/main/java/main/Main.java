@@ -15,5 +15,9 @@ public class Main {
         rbt.rotateRight(rbt.getRoot());
         System.out.println("");
         rbt.printTree();
+
+        rbt.rotateLeft(rbt.getRoot());
+        System.out.println("");
+        rbt.printTree();
     }
 }
