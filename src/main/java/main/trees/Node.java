@@ -10,6 +10,7 @@ public class Node {
     private boolean black;
 
     public Node() {
+        parent = null;
         leftChild = null;
         rightChild = null;
         word = "";
