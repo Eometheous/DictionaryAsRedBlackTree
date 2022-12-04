@@ -6,13 +6,13 @@ import main.trees.RedBlackTree;
 public class Main {
     public static void main(String[] args) {
         RedBlackTree rbt = new RedBlackTree();
-        rbt.insert("g");
-        rbt.insert("h");
         rbt.insert("b");
         rbt.insert("a");
+        rbt.insert("g");
         rbt.insert("c");
+        rbt.insert("h");
         rbt.printTree();
-        rbt.rotateRight(rbt.getRoot());
+        rbt.rotateLeft(rbt.getRoot());
         System.out.println("");
         rbt.printTree();
 
