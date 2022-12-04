@@ -117,8 +117,17 @@ public class RedBlackTree {
         return n.getParent().getParent();
     }
 
-    public void rotateLeft(Node n){
-        //
+    public void rotateLeft(Node x){
+        Node y = x.getRightChild();
+        if (x == root) {
+            root = y;
+        }
+        Node b = y.getLeftChild();
+        x.setRightChild(b);
+
+        y.setParent(x.getParent());
+        x.setParent(y);
+        y.setLeftChild(x);
     }
 
     public void rotateRight(Node y){
