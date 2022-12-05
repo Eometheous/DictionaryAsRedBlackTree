@@ -1,5 +1,9 @@
 package main.trees;
 
+import java.io.BufferedReader;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
 import java.util.Objects;
 
 public class RedBlackTree {
@@ -7,6 +11,26 @@ public class RedBlackTree {
 
     public RedBlackTree() {
         root = null;
+    }
+
+    /**
+     * Loads the dictionary into the RedBlack Tree
+     * supports file of any length as long as there is one word per line
+     */
+    public void loadDictionary() {
+        try{
+            BufferedReader readerBoi = new BufferedReader(new FileReader("./dictionary.txt"));
+            String line = readerBoi.readLine();
+            while(line !=null){
+                System.out.println("adding: " + line.trim());
+                addNode(line.trim());
+                line = readerBoi.readLine();
+            }
+        } catch (IOException e) {
+            System.out.println("paths rekt");
+            throw new RuntimeException(e);
+        }
+
     }
 
     public boolean isLeaf(Node n){
@@ -127,7 +151,10 @@ public class RedBlackTree {
         }
         Node b = y.getLeftChild();
         x.setRightChild(b);
-        b.setParent(x);
+        if(b != null){
+            b.setParent(x);
+        }
+
 
         y.setParent(x.getParent());
 
@@ -144,7 +171,6 @@ public class RedBlackTree {
         if(x.getRightChild() != null){
             x.getRightChild().setParent(y);
         }
-
         x.setParent(y.getParent());
         y.setParent(x);
         x.setRightChild(y);

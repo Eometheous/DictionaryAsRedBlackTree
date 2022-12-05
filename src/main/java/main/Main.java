@@ -3,14 +3,17 @@ package main;
 import main.trees.Node;
 import main.trees.RedBlackTree;
 
+import java.io.BufferedReader;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+
 public class Main {
-    public static void main(String[] args) {
+    public static void main(String[] args) throws FileNotFoundException {
+
         RedBlackTree rbt = new RedBlackTree();
-        rbt.insert("g");
-        rbt.insert("b");
-        rbt.insert("a");
-        rbt.insert("c");
-        rbt.insert("h");
+        rbt.loadDictionary();
+
+        //Printing dictionary causes issues
         rbt.printTree();
         rbt.rotateRight(rbt.getRoot());
         System.out.println("");
