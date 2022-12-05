@@ -1,7 +1,5 @@
 package main.trees;
 
-import org.jetbrains.annotations.NotNull;
-
 import java.util.Objects;
 
 public class RedBlackTree {
@@ -63,7 +61,6 @@ public class RedBlackTree {
                     currentNode.setLeftChild(newNode);
                     newNode.setParent(currentNode);
                     newNode.setColor(false);
-//                    return;
                 }
                 else
                     currentNode = currentNode.getLeftChild();
@@ -73,7 +70,6 @@ public class RedBlackTree {
                     currentNode.setRightChild(newNode);
                     newNode.setParent(currentNode);
                     newNode.setColor(false);
-//                    return;
                 }
                 else
                     currentNode = currentNode.getRightChild();
@@ -101,7 +97,7 @@ public class RedBlackTree {
 
 
 
-    public Node getSibling(@NotNull Node n){
+    public Node getSibling(Node n){
         if (n.getParent().getRightChild() == n) {
             return n.getParent().getLeftChild();
         }
