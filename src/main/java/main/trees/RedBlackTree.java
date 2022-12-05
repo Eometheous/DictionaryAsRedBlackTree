@@ -1,5 +1,7 @@
 package main.trees;
 
+import org.jetbrains.annotations.NotNull;
+
 import java.util.Objects;
 
 public class RedBlackTree {
@@ -98,7 +100,8 @@ public class RedBlackTree {
     }
 
 
-    public Node getSibling(Node n){
+
+    public Node getSibling(@NotNull Node n){
         if (n.getParent().getRightChild() == n) {
             return n.getParent().getLeftChild();
         }
@@ -107,10 +110,14 @@ public class RedBlackTree {
 
 
     public Node getAunt(Node n){
-        if (isLeftChild(getGrandparent(n), n.getParent())) {
-            return getGrandparent(n).getRightChild();
+        Node grandParent = getGrandparent(n);
+        if(grandParent != null ){
+            if (isLeftChild(getGrandparent(n), n.getParent())) {
+                return getGrandparent(n).getRightChild();
+            }
+            return getGrandparent(n).getLeftChild();
         }
-        return getGrandparent(n).getLeftChild();
+        else return null;
     }
 
     public Node getGrandparent(Node n){
@@ -124,8 +131,10 @@ public class RedBlackTree {
         }
         Node b = y.getLeftChild();
         x.setRightChild(b);
+        b.setParent(x);
 
         y.setParent(x.getParent());
+
         x.setParent(y);
         y.setLeftChild(x);
     }
@@ -136,16 +145,72 @@ public class RedBlackTree {
             root = x;
         }
         y.setLeftChild(x.getRightChild());
-        x.getRightChild().setParent(y);
+        if(x.getRightChild() != null){
+            x.getRightChild().setParent(y);
+        }
 
         x.setParent(y.getParent());
-
         y.setParent(x);
         x.setRightChild(y);
     }
 
     public void fixTree(Node current) {
-        //
+        //base case
+        if(current.getParent() == null){
+            return;
+        }
+        Node parent = current.getParent();
+        //1) current is the root node. Make it black and quit.
+        if(current == root){
+            current.setBlack();
+        }
+        //2) Parent is black. Quit, the tree is a Red Black Tree.
+        if(parent.getColor() == true){
+            return;
+        }
+        Node grandparent = parent.getParent();
+        //3) The current node is red and the parent node is red. The tree is unbalanced and you will have to modify it in the following way.
+        //I. If the aunt node is empty or black, then there are four sub cases that you have to process.
+        Node aunt = getAunt(current);
+        if(getAunt(current) == null || aunt.getColor()){
+            //A) grandparent –parent(is left child)— current (is right child) case.
+            if(isLeftChild(grandparent,parent) && isRightChild(parent,current)){
+                //Solution: rotate the parent left and then continue recursively fixing the tree starting with the original parent.
+                rotateLeft(parent);
+                fixTree(parent);
+            }
+            //B) grandparent –parent (is right child)— current (is left child) case.
+            if(isRightChild(grandparent,parent) && isLeftChild(parent,current)){
+                //Solution: rotate the parent right and then continue recursively fixing the tree starting with the original parent.
+                rotateRight(parent);
+                fixTree(parent);
+            }
+            //C) grandparent –parent (is left child)— current (is left child) case.
+            if(isLeftChild(grandparent,parent) && isLeftChild(parent,current)){
+                //Solution: make the parent black, make the grandparent red, rotate the grandparent to the right
+                parent.setBlack();
+                    grandparent.setRed();
+                rotateRight(grandparent);
+                //Quit tree is balanced.
+            }
+            //D) grandparent –parent (is right child)— current (is right child) case
+            if(isRightChild(grandparent,parent) && isRightChild(parent,current)){
+                // Solution: make the parent black, make the grandparent red, rotate the grandparent to the left
+                parent.setBlack();
+                    grandparent.setRed();
+                rotateLeft(grandparent);
+                //Quit tree is balanced.
+            }
+        }
+        else if(aunt.getColor() == false){
+            parent.setBlack();
+            aunt.setBlack();
+            if(grandparent != root){
+                grandparent.setRed();
+            }
+
+            fixTree(grandparent);
+        }
     }
 
     public boolean isEmpty(Node n){
@@ -154,8 +219,20 @@ public class RedBlackTree {
 
     public boolean isLeftChild(Node parent, Node child)
     {
+        if(parent == null || child == null){
+            return false;
+        }
         //child is less than parent
         return child.compareTo(parent) < 0;
+    }
+
+    public boolean isRightChild(Node parent, Node child)
+    {
+        if(parent == null || child == null){
+            return false;
+        }
+        //child is less than parent
+        return !(child.compareTo(parent) < 0);
     }
 
     public void preOrderVisit(Visitor v) {

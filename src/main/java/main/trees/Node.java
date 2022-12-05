@@ -37,9 +37,22 @@ public class Node {
     public void setWord(String word) {
         this.word = word;
     }
+
+    /**
+     * getColor can also be knows as "is Black"
+     * for determinining the color of this node
+     * @return true if node is black, false if node is red.
+     */
     public boolean getColor() {return black;}
     public void setColor(boolean black) {
         this.black = black;
+    }
+    public void setRed(){
+
+        this.black = false;
+    }
+    public void setBlack(){
+        this.black = true;
     }
     public boolean isLeaf() {return leftChild == null && rightChild == null;}
 
