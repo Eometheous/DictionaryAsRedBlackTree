@@ -59,4 +59,7 @@ public class Node {
     public int compareTo(Node parent) {
         return word.compareTo(parent.getWord());
     }
+    public String toString() {
+        return word;
+    }
 }
