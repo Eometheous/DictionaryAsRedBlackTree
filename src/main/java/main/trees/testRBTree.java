@@ -19,6 +19,7 @@ public class testRBTree {
         rbt.insert("G");
         rbt.insert("I");
         rbt.insert("J");
+        System.out.println(rbt.lookup("D"));
         assertEquals("DBACFEHGIJ", makeString(rbt));
         String str=     "Color: true, Key:D Parent: \n"+
                 "Color: true, Key:B Parent: D\n"+

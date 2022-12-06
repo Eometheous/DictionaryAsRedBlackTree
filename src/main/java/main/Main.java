@@ -12,15 +12,17 @@ public class Main {
 
         RedBlackTree rbt = new RedBlackTree();
         rbt.loadDictionary();
+        //
+        rbt.spellCheck();
 
         //Printing dictionary causes issues
-        rbt.printTree();
+        //rbt.printTree();
         rbt.rotateRight(rbt.getRoot());
         System.out.println("");
-        rbt.printTree();
+        //rbt.printTree();
 
         rbt.rotateLeft(rbt.getRoot());
         System.out.println("");
-        rbt.printTree();
+        //bt.printTree();
     }
 }
