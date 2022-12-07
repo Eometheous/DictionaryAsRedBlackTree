@@ -3,6 +3,7 @@ package main.trees;
 import java.io.*;
 import java.util.Objects;
 
+import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 
 public class RedBlackTree {
     private Node root;
@@ -17,7 +18,7 @@ public class RedBlackTree {
      */
     public void loadDictionary() {
         try{
-            BufferedReader readerBoi = new BufferedReader(new FileReader("src/main/java/dictionary.txt"));
+            BufferedReader readerBoi = new BufferedReader(new FileReader("./dictionary.txt"));
             String line = readerBoi.readLine();
             while(line !=null){
                 System.out.println("adding: " + line.trim());
@@ -36,7 +37,7 @@ public class RedBlackTree {
      */
     private void verify() {
         try{
-            BufferedReader readerBoi = new BufferedReader(new FileReader("src/main/java/dictionary.txt"));
+            BufferedReader readerBoi = new BufferedReader(new FileReader("./dictionary.txt"));
             String line = readerBoi.readLine();
             boolean topGstatus = true;
             while(line !=null){
@@ -66,7 +67,7 @@ public class RedBlackTree {
         int wordsWrong = 0;
         int wordsCorrect = 0;
         try{
-            String filePath = "src/main/java/poem.txt";
+            String filePath = "poem.txt";
             File file = new File(filePath);
             if (!file.exists()) {
                 System.out.println("its rekt");
@@ -102,6 +103,9 @@ public class RedBlackTree {
             System.out.println("File read error.");
         }
     }
+
+
+
 
     public boolean isLeaf(Node n){
         if (n.equals(root) && n.getLeftChild() == null && n.getRightChild() == null) return true;
@@ -212,14 +216,28 @@ public class RedBlackTree {
         return n.getParent().getParent();
     }
 
-    public void rotateLeft(Node x) {
-        // TODO rotate left needs to be done
-
+    public void rotateLeft(Node x){
+        //Comments refrence lecture 12 page 20
+        System.out.println("spinning left");
+        Node y = x.getRightChild(); // ref to y
+        x.setRightChild(y.getLeftChild()); //set X right child to B
+        if(y.getLeftChild() != null){
+            y.getLeftChild().setParent(x); //set B's parent to X
+        }
+        y.setParent(x.getParent()); // Set y's parent to the node that refrences the subtree(x's parents)
+        if(x.getParent() == null){
+            root = y;               //if X is the root set Y to the root
+        } else if( x == x.getParent().getLeftChild()){
+            x.getParent().setLeftChild(y); //if X was the left child set the new left child to Y
+        } else{
+            x.getParent().setRightChild(y); // if X was the right child set the new right child to Y
+        }
+        y.setLeftChild(x);
+        x.setParent(y);
     }
 
     public void rotateRight(Node y){
         System.out.println("spinning right");
-
         Node x = y.getLeftChild();
         Node b = x.getRightChild();
         Node p = y.getParent();
@@ -293,7 +311,7 @@ public class RedBlackTree {
                 //Quit tree is balanced.
             }
         }
-        else {
+        else if(aunt.getColor() == false){
             System.out.println("Case else");
             parent.setBlack();
             aunt.setBlack();
